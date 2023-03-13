@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c4hka5xrn5lp0"]
+
+[ext_resource type="FontFile" uid="uid://cc3l4xukixfg" path="res://fonts/Xolonium-Regular.ttf" id="1_kuwba"]
+
+[resource]
+font = ExtResource("1_kuwba")
+font_size = 64
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(1, 2)

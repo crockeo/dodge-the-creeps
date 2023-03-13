@@ -1,0 +1,102 @@
+[gd_scene load_steps=8 format=3 uid="uid://ciu0xw2755k4c"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_veemj"]
+[ext_resource type="PackedScene" uid="uid://cg63cs705s04r" path="res://Mob.tscn" id="2_7ewnr"]
+[ext_resource type="PackedScene" uid="uid://ci2jjnrpobtxx" path="res://Player.tscn" id="3_skryp"]
+[ext_resource type="Script" path="res://HUD.gd" id="4_gav82"]
+[ext_resource type="FontFile" uid="uid://cc3l4xukixfg" path="res://fonts/Xolonium-Regular.ttf" id="4_pvile"]
+[ext_resource type="LabelSettings" uid="uid://c4hka5xrn5lp0" path="res://label.tres" id="5_pduxk"]
+
+[sub_resource type="Curve2D" id="Curve2D_7xjev"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_veemj")
+mob_scene = ExtResource("2_7ewnr")
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_7xjev")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+
+[node name="Player" parent="." instance=ExtResource("3_skryp")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("4_gav82")
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_right = 146.0
+offset_bottom = 81.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_pvile")
+theme_override_font_sizes/font_size = 64
+text = "123123 "
+label_settings = ExtResource("5_pduxk")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -120.0
+offset_right = 68.0
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "Dodge the Creeps!"
+label_settings = ExtResource("5_pduxk")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -88.5
+offset_top = -142.0
+offset_right = 88.5
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_pvile")
+theme_override_font_sizes/font_size = 64
+text = "Start"
+
+[node name="MessageTimer" type="Timer" parent="HUD"]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]
+[connection signal="pressed" from="HUD/StartButton" to="HUD" method="_on_start_button_pressed"]
+[connection signal="timeout" from="HUD/MessageTimer" to="HUD" method="_on_message_timer_timeout"]
